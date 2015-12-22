@@ -34,6 +34,7 @@
     function ProxyLoad(options) {
         options = options || {};
 
+        // select every nodes we want to rewrite
         var elements = document.querySelectorAll(
             (options.selector || '*') + '[data-proxy-js]'
         );
@@ -54,7 +55,10 @@
 
             (function (element) {
                 var proxyUrl = options.url + '/' + src.replace(protocolsRe, '');
+
+                // if proxy serves file
                 ping(proxyUrl, function () {
+                    // then redirect element src attribute
                     element.setAttribute('src', proxyUrl);
                 });
             })(element);
