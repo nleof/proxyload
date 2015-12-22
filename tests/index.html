@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Test</title>
+    </head>
+    <body>
+        <img data-proxy-js src="http://domain.tld/rick.jpg" />
+        <img data-proxy-js src="http://domain.tld/ghost.jpg" />
+
+        <script type="application/javascript" src="proxyload.min.js"></script>
+        <script>
+         ProxyLoad({
+             url: 'http://localhost:3000',
+             selector: '*',
+         });
+        </script>
+    </body>
+</html>

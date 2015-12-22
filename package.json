@@ -1,0 +1,38 @@
+{
+  "name": "proxyload",
+  "officialName": "ProxyLoad",
+  "version": "0.0.1",
+  "summary": "Quickly load webpage assets from proxy",
+  "description": "ProxyLoad rewrites DOM elements and point their src attribute to a given url.",
+  "author": {
+    "name": "Alexandre Leroux",
+    "url": "http://www.yawp.fr"
+  },
+  "homepage": "https://github.com/nleof/proxyload",
+  "license": "BSD-2-Clause",
+  "keywords": [
+    "client-side",
+    "proxy",
+    "assets",
+    "local"
+  ],
+  "main": "proxyload.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nleof/proxyload"
+  },
+  "bugs": {
+    "url": "https://github.com/nleof/proxyload/issues"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.1",
+
+    "node-http-server": "^3.0.5"
+  },
+  "scripts": {
+    "test": "phantomjs tests/runner.js"
+  }
+}
