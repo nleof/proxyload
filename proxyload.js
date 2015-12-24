@@ -6,10 +6,18 @@
     }
 
     var fileRe = /^file:\/\//i,
-        protocolsRe = /^(?:https?:)?\/\//i;
+        protocolRe = /^(?:https?:)?\/\//i,
+        hostRe = /[\w.:]+\//i;
 
-    // ping check if resource exists at given url
-    function ping(url, callback) {
+    // call executes a callback if it is a function
+    function call(func) {
+        if (typeof func === 'function') {
+            func();
+        }
+    }
+
+    // ping checks if resource exists at given url
+    function ping(url, success, error) {
         var request = new XMLHttpRequest();
 
         request.open(
@@ -21,9 +29,9 @@
         request.onreadystatechange = function () {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status === 200) {
-                    if (typeof callback === 'function') {
-                        callback();
-                    }
+                    call(success);
+                } else {
+                    call(error);
                 }
             }
         };
@@ -31,37 +39,56 @@
         request.send(null);
     }
 
+    // redirect rewrites a dom element src to a given url
+    function redirect(element, attr, url) {
+        return function () {
+            element.setAttribute(attr, url);
+        };
+    }
+
     function ProxyLoad(options) {
         options = options || {};
 
         // select every nodes we want to rewrite
         var elements = document.querySelectorAll(
-            (options.selector || '*') + '[data-proxy-js]'
+            options.selector || '[data-proxyload]'
         );
 
         for (var i=0; i<elements.length; i++) {
             var element = elements[i];
 
             // first we get the element src if it exists...
-            if (!element.src) {
+            var attr = '';
+            if (element.src) {
+                attr = 'src';
+            } else if (element.href) {
+                attr = 'href';
+            } else {
                 continue;
             }
-            var src = element.src.trim();
+            var src = element[attr].trim();
 
             // if src is local is not of our concern
             if (src.match(fileRe)) {
                 continue;
             }
 
-            (function (element) {
-                var proxyUrl = options.url + '/' + src.replace(protocolsRe, '');
+            var domain = src.replace(protocolRe, ''),
+                proxyUrl = options.url + '/' + domain;
 
-                // if proxy serves file
-                ping(proxyUrl, function () {
-                    // then redirect element src attribute
-                    element.setAttribute('src', proxyUrl);
-                });
-            })(element);
+            ping(
+                proxyUrl, // we first try on proxy/domain.tld/path
+                redirect(element, attr, proxyUrl), // if found redirect
+                function () { // if not ...
+                    var path = domain.replace(hostRe, ''),
+                        proxyUrl = options.url + '/' + path;
+
+                    ping(
+                        proxyUrl, // retry on proxy/path
+                        redirect(element, attr, proxyUrl)
+                    );
+                }
+            );
         }
     }
 
