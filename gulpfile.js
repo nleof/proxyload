@@ -26,7 +26,7 @@ gulp.task('minify', function () {
         .pipe(uglify())
         .pipe(rename('proxyload.min.js'))
         .pipe(gulp.dest('./'))
-        .pipe(gulp.dest('./tests/'));
+        .pipe(gulp.dest('./tests/website/'));
 });
 
 gulp.task('watch', function () {

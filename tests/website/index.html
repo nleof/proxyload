@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Test</title>
+    </head>
+    <body>
+
+        <img src="http://domain.tld/rick.jpg"
+             data-proxyload
+             data-proxyload-expected="http://localhost:3000/domain.tld/rick.jpg"/>
+
+        <img src="http://domain.tld/ghost.jpg"
+             data-proxyload
+             data-proxyload-expected="http://domain.tld/ghost.jpg"/>
+
+        <script type="application/javascript" src="proxyload.min.js"></script>
+        <script>
+         (function () {
+             ProxyLoad({
+                 url: 'http://localhost:3000'
+             });
+         })();
+        </script>
+    </body>
+</html>

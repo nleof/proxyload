@@ -30,9 +30,11 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.1",
 
-    "node-http-server": "^3.0.5"
+    "http-server": "^0.8.5",
+    "zombie": "^4.2.1",
+    "mocha": "^2.3.4"
   },
   "scripts": {
-    "test": "phantomjs tests/runner.js"
+    "test": "mocha tests/zombie.js"
   }
 }
