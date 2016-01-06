@@ -27,7 +27,7 @@
         );
 
         request.onreadystatechange = function () {
-            if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.readyState === 4) { // XMLHttpRequest.DONE
                 if (request.status === 200) {
                     call(success);
                 } else {
