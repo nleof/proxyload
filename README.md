@@ -28,9 +28,11 @@ You can can the attribute data-proxyload to your DOM elements.
 
 <script type="application/javascript" src="proxyload.min.js"></script>
 <script>
-    ProxyLoad({
-        url: 'http://localhost:3000'
-    });
+(function () {
+  ProxyLoad({
+    url: 'http://localhost:3000'
+  });
+})();
 </script>
 ```
 
@@ -44,10 +46,12 @@ You can also change the default selector `[data-proxyload]` with:
 
 ```html
 <script>
-    ProxyLoad({
-        url: 'http://localhost:3000',
-        selector: '*' // any valid CSS selector
-    });
+(function () {
+  ProxyLoad({
+    url: 'http://localhost:3000',
+    selector: '*' // any valid CSS selector
+  });
+})();
 </script>
 ```
 
