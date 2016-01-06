@@ -1,4 +1,6 @@
 language: node_js
+node_js:
+  - "4.1"
 install:
     - npm install -g gulp mocha
     - npm install
