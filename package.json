@@ -1,7 +1,7 @@
 {
   "name": "proxyload",
   "officialName": "ProxyLoad",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "summary": "Quickly load webpage assets from proxy",
   "description": "ProxyLoad rewrites DOM elements and point their src attribute to a given url.",
   "author": {
@@ -29,7 +29,6 @@
     "gulp-jshint": "^2.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.1",
-
     "http-server": "^0.8.5",
     "zombie": "^4.2.1",
     "mocha": "^2.3.4"
