@@ -20,14 +20,12 @@ describe('User visits home page', function () {
         it('should have expected src', function () {
             var tests = browser.queryAll('[data-proxyload]');
 
-            for (var i=0; i<tests.length; i++) {
-                var test = tests[i];
-
+            Array.prototype.forEach.call(tests, function (test) {
                 assert.equal(
                     test.getAttribute('src'),
                     test.getAttribute('data-proxyload-expected')
                 );
-            }
+            });
         });
     });
 });
