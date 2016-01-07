@@ -1,4 +1,4 @@
-;(function (global) {
+!(function (global) {
     'use strict';
 
     if (global.ProxyLoad) {
@@ -8,13 +8,6 @@
     var fileRe = /^file:\/\//i,
         protocolRe = /^(?:https?:)?\/\//i,
         hostRe = /[\w.:]+\//i;
-
-    // call executes a callback if it is a function
-    function call(func) {
-        if (typeof func === 'function') {
-            func();
-        }
-    }
 
     // ping checks if resource exists at given url
     function ping(url, success, error) {
@@ -29,21 +22,14 @@
         request.onreadystatechange = function () {
             if (request.readyState === 4) { // XMLHttpRequest.DONE
                 if (request.status === 200) {
-                    call(success);
+                    success();
                 } else {
-                    call(error);
+                    error();
                 }
             }
         };
 
         request.send(null);
-    }
-
-    // redirect rewrites a dom element src to a given url
-    function redirect(element, attr, url) {
-        return function () {
-            element.setAttribute(attr, url);
-        };
     }
 
     function ProxyLoad(options) {
@@ -54,9 +40,7 @@
             options.selector || '[data-proxyload]'
         );
 
-        for (var i=0; i<elements.length; i++) {
-            var element = elements[i];
-
+        Array.prototype.forEach.call(elements, function (element) {
             // first we get the element src if it exists...
             var attr = '';
             if (element.src) {
@@ -64,32 +48,39 @@
             } else if (element.href) {
                 attr = 'href';
             } else {
-                continue;
+                return;
             }
             var src = element[attr].trim();
 
             // if src is local is not of our concern
             if (src.match(fileRe)) {
-                continue;
+                return;
             }
 
-            var domain = src.replace(protocolRe, ''),
-                proxyUrl = options.url + '/' + domain;
+            var domain = src.replace(protocolRe, ''), // remove protocol from src url
+                url = options.url + '/' + domain;
 
             ping(
-                proxyUrl, // we first try on proxy/domain.tld/path
-                redirect(element, attr, proxyUrl), // if found redirect
+                url, // we first try on proxy/domain.tld/path
+                function () {
+                    element.setAttribute(attr, url);
+                },
                 function () { // if not ...
-                    var path = domain.replace(hostRe, ''),
-                        proxyUrl = options.url + '/' + path;
+                    var url = options.url + '/' + domain.replace(hostRe, '');
 
                     ping(
-                        proxyUrl, // retry on proxy/path
-                        redirect(element, attr, proxyUrl)
+                        url, // retry on proxy/path
+                        function () {
+                            element.setAttribute(attr, url);
+                        },
+                        function () {
+                            // proxy does not serve ressource
+                            // don't touch original src
+                        }
                     );
                 }
             );
-        }
+        });
     }
 
     global.ProxyLoad = ProxyLoad;
