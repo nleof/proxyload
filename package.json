@@ -1,7 +1,7 @@
 {
   "name": "proxyload",
   "officialName": "ProxyLoad",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "summary": "Quickly load webpage assets from proxy",
   "description": "ProxyLoad rewrites DOM elements and point their src attribute to a given url.",
   "author": {
