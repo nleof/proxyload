@@ -33,6 +33,4 @@ gulp.task('watch', function () {
     gulp.watch([src, 'tests/*.js'], ['default']);
 });
 
-gulp.task('default', ['tests', 'jshint', 'minify'], function() {
-    console.log('Done');
-});
+gulp.task('default', ['tests', 'jshint', 'minify']);
